@@ -13,8 +13,8 @@ tokenizer = AutoTokenizer.from_pretrained(
 )
 
 
-def getitem(text): 
-# input text make in model input(tokenize, make attention mask)
+def getitem(text):
+    # input text make in model input(tokenize, make attention mask)
 
     inputs = tokenizer(
         text,
@@ -32,13 +32,13 @@ def getitem(text):
 
 
 def test():
-    # get a pre-trained model from Transformer 
+    # get a pre-trained model from Transformer
     model = ElectraForSequenceClassification.from_pretrained(
         "monologg/koelectra-small-v2-discriminator"
     )
 
     try:
-        # load trained model 
+        # load trained model
         model.load_state_dict(torch.load("model.pt"))
     except:
         # if not have trained model, first train in train code
@@ -47,7 +47,7 @@ def test():
     batch_size = 128
     optimizer = AdamW(model.parameters(), lr=1e-5)
 
-    while True: # predict sentiment
+    while True:  # predict sentiment
         logger.info('please input reply >')
         reply = input()
         if reply == 'quit':
