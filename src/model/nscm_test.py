@@ -53,7 +53,7 @@ def test():
         input_ids, attention_mask = getitem(reply)
         y_pred = model(input_ids, attention_mask=attention_mask)[0]
         probs = torch.softmax(y_pred, dim=-1) # output tensor lie in the range [0,1] and sum to 1.
-        temp, predicted = torch.max(y_pred, 1) #
+        temp, predicted = torch.max(y_pred, 1)
 
         logger.info(predicted)
         if predicted == 0:
@@ -61,5 +61,5 @@ def test():
             logger.info((torch.max(probs)).item())
         else:
             logger.info('Positive')
-            print('probs : ', (torch.max(probs)).item())
+            logger.info((torch.max(probs)).item())
 test()
