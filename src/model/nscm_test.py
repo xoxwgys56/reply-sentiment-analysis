@@ -2,15 +2,13 @@ import pandas as pd
 import torch
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, Dataset
-from transformers import AutoTokenizer, ElectraForSequenceClassification, AdamW
+from transformers import AutoTokenizer, ElectraForSequenceClassification, AdamW, ElectraTokenizer
 from tqdm.notebook import tqdm
 from loguru import logger
 
 # device = torch.device("cuda") # gpu 사용
 
-tokenizer = AutoTokenizer.from_pretrained(
-    "monologg/koelectra-small-v2-discriminator"
-)
+tokenizer = ElectraTokenizer.from_pretrained("monologg/koelectra-base-v3-discriminator")
 
 
 def getitem(text):
@@ -54,10 +52,14 @@ def test():
             break
         input_ids, attention_mask = getitem(reply)
         y_pred = model(input_ids, attention_mask=attention_mask)[0]
+        probs = torch.softmax(y_pred, dim=-1)
         temp, predicted = torch.max(y_pred, 1)
 
         logger.info(predicted)
         if predicted == 0:
             logger.info('Negative')
+            logger.info((torch.max(probs)).item())
         else:
             logger.info('Positive')
+            print('probs : ', (torch.max(probs)).item())
+test()
